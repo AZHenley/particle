@@ -9,6 +9,7 @@ var frameCount = 0;
 var frameRate = 0;
 var width = 1;
 var height = 1;
+var updateid = 0;
 var emitters = [];
 var app = {};
 
@@ -146,7 +147,7 @@ function init() {
 
 function update() {
     emitters.forEach(emitter => emitter.update());
-    requestAnimationFrame(update);
+    updateid = requestAnimationFrame(update);
     time++; 
 
     let currentTime = Date.now();
@@ -190,6 +191,7 @@ function start(c1, c2) {
 function restart() {
     code1 = document.getElementById('tb1').value;
     code2 = document.getElementById('tb2').value;
+    cancelAnimationFrame(updateid);
     start(code1, code2);
 }
 
