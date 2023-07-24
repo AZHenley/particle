@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Particle Playground</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #ffffff;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="display" style="display:inline-block;border:1px solid black;"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/pixi.js@5.3.10/dist/pixi.min.js"></script>
+	<p><small>FPS: <span id="fps"></span>, Particles: <span id="particles"></span></small></p>
+
+	Presets: <select id="preset-select" onchange="presetSelected()">
+    </select><br>
+
+	<p>Burst size: <span id="st1"></span></p>
+	<input type="range" min="1" max="16" value="3" class="slider" id="s1" step="1">
+
+	<p>Burst delay: <span id="st2"></span></p>
+	<input type="range" min="2" max="60" value="30" class="slider" id="s2" step="1">
+
+	<p>Update event:</p> <textarea id="tb1" rows="6" cols="60" spellcheck="false" style="resize: both;">
+  </textarea>
+
+	<br>
+
+	<p>Init event:</p> <textarea id="tb2" rows="6" cols="60" spellcheck="false" style="resize: both;">
+    </textarea>
+
+	<br><br>
+
+	<button id="myButton" onclick="restart()">Start</button>
+	<button onclick="copyToClipboard()">Copy Code</button>
+
+	<hr>
+
+	<p>The Init event runs once for each particle when it is created. The Update event runs for each particle once per frame. Each particle will be moved by its <i>speed</i> in the direction of its <i>rotation</i>. You can modify all individual particle's properties through the <i>p</i> object, like <i>p.speed</i>. You can even store your own variables, like <i>p.foobar</i>. The other properties of particles include:</p>
+
+	<ul>
+		<li><b>x,y</b> -- position</li>
+		<li><b>xscale,yscale</b> -- multiplies the particle's size</li>
+		<li><b>r,g,b</b> -- color values from 0 to 255</li>
+		<li><b>a</b> -- alpha from 0 to 1</li>
+		<li><b>life</b> -- how many frames until the particle is deleted</li>
+		<li><b>speed</b> -- how far to be moved at the end of the frame</li>
+		<li><b>rotation</b> -- the angle to be moved at the end of the frame, in radians</li>
+		<li><b>i</b> -- the unique id of the particle, starting at 0 and counting up</li>
+		<li><b>z</b> -- the depth to draw the object, smaller numbers get drawn first</li>
+	</ul>
+
+	<p>Press Start to restart with the current code. You can modify Burst Size and Burst Delay anytime with the sliders. There are also globals (I recommend using them as read-only):</p> 
+	
+	<ul>
+		<li><b>height,width</b> -- size of the drawing area</li>
+		<li><b>time</b> -- number of frames that have occured</li>
+		<li><b>bursts</b> -- number of bursts that have occured</li>
+		<li><b>alive</b> -- number of particles currently alive</li>
+		<li><b>burstsize</b> -- number of particles to create at a time</li>
+		<li><b>burstdelay</b> -- delay between bursts</li>
+		<li><b>move(obj,distance,direction)</b> -- helper function to move a particle</li>
+	</ul>
+
+	<br><br><br>
+	<script src="particle.js"></script>
+</body>
+
+</html>
