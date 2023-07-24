@@ -4,20 +4,13 @@ var burstsize = 3;
 var burstdelay = 30;
 var count = 0;
 var alive = 0;
-let lastTime = Date.now();
-let frameCount = 0;
-let frameRate = 0;
-let width = 600;
-let height = 400;
-let emitters = [];
-let app = new PIXI.Application({
-    width: width,
-    height: height,
-    backgroundColor: 0xffffff,
-});
-app.stage.sortableChildren = true;
-canvas = document.getElementById('display');
-canvas.appendChild(app.view);
+var lastTime = Date.now();
+var frameCount = 0;
+var frameRate = 0;
+var width = 1;
+var height = 1;
+var emitters = [];
+var app = {};
 
 ////
 
@@ -167,13 +160,24 @@ function update() {
     }
     particlesText.innerText = alive;
 }
-//update();
 
-function restart() {
+function ParticleCanvas(element, w, h) {
+    app = new PIXI.Application({
+        width: w,
+        height: h,
+        backgroundColor: 0xffffff,
+    });
+    width = w;
+    height = h;
+    app.stage.sortableChildren = true;
+    element.appendChild(app.view);
+}
+
+function start(c1, c2) {
     app.stage.removeChildren();
-    code1 = document.getElementById('tb1').value;
-    code2 = document.getElementById('tb2').value;
-    time = 0; // TODO: Check bug. Doesn't always start at 0.
+    code1 = c1;
+    code2 = c2;
+    time = 0; 
     bursts = 0; 
     count = 0;
 
@@ -181,6 +185,12 @@ function restart() {
     let emitter = new Emitter(init);
     emitters.push(emitter);
     update();
+}
+
+function restart() {
+    code1 = document.getElementById('tb1').value;
+    code2 = document.getElementById('tb2').value;
+    start(code1, code2);
 }
 
 function copyToClipboard() {
@@ -256,6 +266,7 @@ p.xscale = p.yscale = 0.65; // Initial size of particles`
 ];
 
 window.onload = function() {
+    ParticleCanvas(document.getElementById('display'), 600, 400, "", "");
     var select = document.getElementById("preset-select");
 
     for (var i = 0; i < presets.length; i++) {
