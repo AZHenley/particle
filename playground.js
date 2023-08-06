@@ -11,8 +11,8 @@ function restart() {
 function copyToClipboard() {
     var burstSize = document.getElementById('st1').innerHTML;
     var burstDelay = document.getElementById('st2').innerHTML;
-    var updateEvent = document.getElementById('tb1').getValue();
-    var initEvent = document.getElementById('tb2').getValue();
+    var updateEvent = editor1.getValue();
+    var initEvent = editor2.getValue();
     var str = "Burst size: " + burstSize + "\nBurst delay: " + burstDelay + "\n\nUpdate event:\n" + updateEvent + "\n\nInit event:\n" + initEvent;
     
     navigator.clipboard.writeText(str).then(function() {
