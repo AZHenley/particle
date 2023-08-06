@@ -1,6 +1,9 @@
+var editor1 = {};
+var editor2 = {};
+
 function restart() {
-    code1 = document.getElementById('tb1').value;
-    code2 = document.getElementById('tb2').value;
+    code1 = editor1.getValue();
+    code2 = editor2.getValue();
     cancelAnimationFrame(updateid);
     start(code1, code2);
 }
@@ -8,8 +11,8 @@ function restart() {
 function copyToClipboard() {
     var burstSize = document.getElementById('st1').innerHTML;
     var burstDelay = document.getElementById('st2').innerHTML;
-    var updateEvent = document.getElementById('tb1').value;
-    var initEvent = document.getElementById('tb2').value;
+    var updateEvent = document.getElementById('tb1').getValue();
+    var initEvent = document.getElementById('tb2').getValue();
     var str = "Burst size: " + burstSize + "\nBurst delay: " + burstDelay + "\n\nUpdate event:\n" + updateEvent + "\n\nInit event:\n" + initEvent;
     
     navigator.clipboard.writeText(str).then(function() {
@@ -59,12 +62,12 @@ if(p.life<50){p.a/=1.05; p.xscale/=1.05; p.yscale/=1.05;}`,
         value: "option3",
         text: "Radiance",
         s1: 10,
-        s2: 3,
+        s2: 4,
         tb1: `p.rotation+=0.01;
 p.g += 0.5; // Gradually change color to cyan over time
 if(p.life % 50 == 0) {p.a -= 0.02;} // Slowly fade out
 p.xscale /= 1.01; p.yscale /= 1.01; // Decrease size over time`,
-        tb2: `p.life = 400; 
+        tb2: `p.life = 300; 
 p.rot = (p.i * Math.PI * 2 / burstsize) + time/700; // Ensures rotation is spread evenly
 if(bursts%30==0) {p.rot = 2* Math.PI * Math.random();}
 p.x = 300; p.y = 200; // The center of the "spell"
@@ -79,7 +82,7 @@ p.xscale = p.yscale = 0.65; // Initial size of particles`
         value: "option4",
         text: "Ex Machina",
         s1: 10,
-        s2: 6,
+        s2: 9,
         tb1: `// Determine behavior based on phase
 switch (p.phase) {
     case 0: // Particles explode outwards
@@ -153,6 +156,10 @@ p.phase = Math.floor(time/100) % 5; // Assign a phase based on the time`
 
 window.onload = function() {
     ParticleCanvas(document.getElementById('display'), 600, 400, "", "");
+    editor1 = ace.edit("tb1");
+    editor1.session.setMode("ace/mode/javascript");
+    editor2 = ace.edit("tb2");
+    editor2.session.setMode("ace/mode/javascript");
     var select = document.getElementById("preset-select");
 
     for (var i = 0; i < presets.length; i++) {
@@ -164,7 +171,6 @@ window.onload = function() {
 
     select.selectedIndex = 3;
     presetSelected();
-    restart();
 }
 
 function presetSelected() {
@@ -180,7 +186,8 @@ function presetSelected() {
         document.getElementById("s2").value = selectedPreset.s2;
         document.getElementById("st2").innerText = selectedPreset.s2;
         burstdelay = selectedPreset.s2;
-        document.getElementById("tb1").value = selectedPreset.tb1;
-        document.getElementById("tb2").value = selectedPreset.tb2;
+        editor1.setValue(selectedPreset.tb1, 1);
+        editor2.setValue(selectedPreset.tb2, 1);
     }
+    restart()
 }
